@@ -22,7 +22,7 @@
     'gpt-terra': 'GPT Terra',
   };
 
-  var state = { family: 'all', query: '', sort: 'asc', allFull: false };
+  var state = { family: 'all', query: '', sort: 'asc', allFull: true };
 
   var els = {
     familyFilter: document.getElementById('family-filter'),
