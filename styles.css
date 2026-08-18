@@ -693,6 +693,10 @@ svg {
   .price-table td.col-rmb {
     display: none;
   }
+  /* 手机端禁用吸顶（iOS Safari sticky 在滚动容器内会错位/留鬼影） */
+  .price-table thead th {
+    position: static;
+  }
   .price-table thead th,
   .price-table tbody td {
     padding: 6px 6px;
