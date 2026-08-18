@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="AI 中转站模型广场价格对比：gemini-3.7-flash、deepseek-v4-flash、grok-4.6、gpt-luna/sol/terra，倍率后实际计费价，按低价排序。" />
+    <link rel="icon" href="favicon.png" type="image/png" />
+    <title>中转站模型比价</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.loli.net/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="./" aria-label="返回首页">
+          <span class="brand__mark" aria-hidden="true">
+            <picture>
+              <source srcset="mascot.webp" type="image/webp" />
+              <img class="brand__img" src="mascot.png" width="30" height="30" alt="" />
+            </picture>
+          </span>
+          <span class="brand__name">中转站模型比价</span>
+        </a>
+        <div class="header-meta">
+          <span>数据更新于 <span class="mono-label" id="header-updated">—</span></span>
+          <span>·</span>
+          <span>倍率后实际计费价</span>
+        </div>
+        <nav class="site-nav" aria-label="主导航">
+          <div class="nav-pop">
+            <button class="btn btn--ghost nav-pop__trigger" type="button" aria-haspopup="true" aria-expanded="false">
+              公众号
+            </button>
+            <div class="nav-pop__card" role="group" aria-label="公众号 白菜与风AI">
+              <p class="nav-pop__title">白菜与风AI</p>
+              <img class="nav-pop__qr" src="wechat-gzh.png" width="220" height="220" alt="公众号 白菜与风AI 二维码" />
+              <p class="nav-pop__id">
+                <span>微信ID：chainCAI</span>
+                <button class="nav-pop__copy" type="button" data-copy="chainCAI">复制</button>
+              </p>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="home-hero">
+        <div class="container home-hero__inner">
+          <picture>
+            <source srcset="mascot.webp" type="image/webp" />
+            <img class="home-hero__logo" src="mascot.png" width="160" height="160" alt="白菜小女仆吉祥物" />
+          </picture>
+          <h1 class="home-hero__title">中转站模型比价</h1>
+          <p class="home-hero__lead">
+            批量抓取 20 个中转站模型广场定价，统一折算为倍率后实际计费价（$/1M tokens），按低价排序。
+          </p>
+          <div class="home-hero__stats" aria-label="收录统计">
+            <span class="stat-chip">站点 <strong id="stat-sites">—</strong></span>
+            <span class="stat-chip">记录 <strong id="stat-records">—</strong></span>
+            <span class="stat-chip">模型类型 <strong id="stat-families">—</strong></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-tools">
+        <div class="container">
+          <div class="home-tools__row">
+            <label class="field select-field" aria-label="排序方式">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 6h16M7 12h10M10 18h4" />
+              </svg>
+              <span class="select-value" id="sort-filter-value">价格从低到高</span>
+              <select id="sort-filter" aria-label="排序方式">
+                <option value="asc">价格从低到高</option>
+                <option value="desc">价格从高到低</option>
+                <option value="site">站点名</option>
+              </select>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </label>
+
+            <label class="field home-tools__search" aria-label="搜索站点或型号">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input id="search-input" type="search" placeholder="搜站点或型号" autocomplete="off" />
+            </label>
+
+            <div class="category-row" id="family-filter" aria-label="模型筛选"></div>
+
+            <div class="toggle-row" aria-label="视图选项">
+              <button class="btn toggle-btn" type="button" id="toggle-all" hidden>查看全部</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-tools">
+        <div class="container">
+          <div class="cheapest-strip" id="cheapest-strip" aria-label="各模型最低价"></div>
+        </div>
+      </section>
+
+      <section class="home-results">
+        <div class="container">
+          <div class="results-head">
+            <p><strong id="result-count">0</strong> 条记录</p>
+            <p class="results-head__note" id="result-note">价格从低到高</p>
+          </div>
+
+          <div id="price-grid"></div>
+
+          <div class="empty-state" id="empty-state" hidden>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.35-4.35" />
+            </svg>
+            <h2>没有找到匹配记录</h2>
+            <p>换个关键词或清除筛选条件试试。</p>
+            <button class="btn" id="clear-filters" type="button">清除筛选</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <p>中转站模型比价 · 数据来自各站公开模型广场 / 定价接口</p>
+        <p class="site-footer__note">价格随时变动，收录不代表对站点稳定性、纯度或资质的背书。</p>
+      </div>
+    </footer>
+
+    <button class="back-to-top" type="button" id="back-to-top" hidden aria-label="回到顶部">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7" />
+      </svg>
+    </button>
+
+    <div class="modal-mask" id="jump-modal" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="jump-modal-title">
+        <h3 class="modal__title" id="jump-modal-title">跳转到站点？</h3>
+        <p class="modal__site" id="jump-modal-site">—</p>
+        <p class="modal__url" id="jump-modal-url">—</p>
+        <div class="modal__actions">
+          <button class="btn" type="button" id="jump-cancel">取消</button>
+          <button class="btn btn--jump" type="button" id="jump-confirm">跳转</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 公众号 / 加入社群弹层：点击切换，点击其他区域关闭（桌面端 hover 可用）
+      const navPops = document.querySelectorAll('.nav-pop')
+      const closeAllPops = () => {
+        navPops.forEach((pop) => {
+          pop.classList.remove('is-open')
+          pop.querySelector('.nav-pop__trigger')?.setAttribute('aria-expanded', 'false')
+        })
+      }
+      navPops.forEach((pop) => {
+        const trigger = pop.querySelector('.nav-pop__trigger')
+        trigger?.addEventListener('click', (event) => {
+          event.stopPropagation()
+          const isOpen = pop.classList.toggle('is-open')
+          trigger.setAttribute('aria-expanded', String(isOpen))
+        })
+      })
+      document.addEventListener('click', closeAllPops)
+
+      // 复制微信ID：优先 Clipboard API，失败时降级 execCommand
+      document.querySelectorAll('[data-copy]').forEach((button) => {
+        button.addEventListener('click', async (event) => {
+          event.stopPropagation()
+          const text = button.getAttribute('data-copy')
+          const done = () => {
+            const label = button.textContent
+            button.textContent = '已复制'
+            setTimeout(() => { button.textContent = label }, 1200)
+          }
+          try {
+            await navigator.clipboard.writeText(text)
+            done()
+          } catch (err) {
+            const ta = document.createElement('textarea')
+            ta.value = text
+            ta.style.position = 'fixed'
+            ta.style.opacity = '0'
+            document.body.appendChild(ta)
+            ta.select()
+            try { document.execCommand('copy'); done() } catch (err2) {}
+            ta.remove()
+          }
+        })
+      })
+    </script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
