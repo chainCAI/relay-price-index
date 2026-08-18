@@ -695,16 +695,16 @@ svg {
   }
   .price-table thead th,
   .price-table tbody td {
-    padding: 7px 8px;
+    padding: 6px 6px;
   }
   .price-table td.col-site {
-    max-width: 84px;
+    max-width: 78px;
   }
   .price-table td.col-model {
-    max-width: 110px;
+    max-width: 96px;
   }
   .site-link {
-    max-width: 76px;
+    max-width: 70px;
   }
 }
 
