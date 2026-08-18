@@ -681,7 +681,30 @@ svg {
     border-radius: var(--radius);
   }
   .price-table {
-    min-width: 720px;
+    min-width: 0;
+    font-size: 12.5px;
+  }
+  /* 手机端隐藏次要列：分组、倍率、人民币 */
+  .price-table thead th:nth-child(3),
+  .price-table thead th:nth-child(4),
+  .price-table thead th:nth-child(8),
+  .price-table td.col-group,
+  .price-table td.col-ratio,
+  .price-table td.col-rmb {
+    display: none;
+  }
+  .price-table thead th,
+  .price-table tbody td {
+    padding: 7px 8px;
+  }
+  .price-table td.col-site {
+    max-width: 84px;
+  }
+  .price-table td.col-model {
+    max-width: 110px;
+  }
+  .site-link {
+    max-width: 76px;
   }
 }
 
